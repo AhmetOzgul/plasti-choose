@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "260103006142",
+    "project_id": "plastichoose",
+    "storage_bucket": "plastichoose.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260103006142:android:6a38becd2a696cc478bbef",
+        "android_client_info": {
+          "package_name": "com.example.plastinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEJUlGBV5NmzWkrw99JBESHUqvtMWrS9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
