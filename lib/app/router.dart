@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:plastinder/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:plastinder/features/auth/presentation/pages/sign_in_page.dart';

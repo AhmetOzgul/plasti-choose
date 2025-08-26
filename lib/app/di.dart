@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:get_it/get_it.dart';
 import 'package:plastinder/features/auth/data/repositories/firebase_auth_repository.dart';
 import 'package:plastinder/features/auth/domain/repositories/auth_repository.dart';
+import 'package:plastinder/features/auth/data/repositories/firestore_user_repository.dart';
+import 'package:plastinder/features/auth/domain/repositories/user_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -15,5 +17,9 @@ void configureDependencies() {
       getIt<fb.FirebaseAuth>(),
       getIt<FirebaseFirestore>(),
     ),
+  );
+
+  getIt.registerLazySingleton<UserRepository>(
+    () => FirestoreUserRepository(getIt<FirebaseFirestore>()),
   );
 }
