@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:plastinder/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:provider/provider.dart';
+import 'package:plastinder/core/widgets/custom_app_bar.dart';
 
 class ProfessorHomePage extends StatelessWidget {
   const ProfessorHomePage({super.key});
@@ -9,7 +10,9 @@ class ProfessorHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color secondary = Theme.of(context).colorScheme.secondary;
     final Color tertiary = Theme.of(context).colorScheme.tertiary;
-    final userId = context.select<AuthController, String?>((c) => c.user?.id);
+    final String displayName = context.select<AuthController, String>(
+      (c) => c.user?.displayName ?? '',
+    );
 
     return Scaffold(
       body: Container(
@@ -19,118 +22,21 @@ class ProfessorHomePage extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: [
               Colors.white,
-              tertiary.withOpacity(0.05),
               secondary.withOpacity(0.05),
+              tertiary.withOpacity(0.05),
             ],
           ),
         ),
         child: SafeArea(
+          top: false,
           child: Column(
             children: [
-              // Custom App Bar
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [tertiary, secondary],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: tertiary.withOpacity(0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: const Icon(
-                            Icons.medical_services,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Hoş geldin, Profesör!',
-                                style: Theme.of(context).textTheme.headlineSmall
-                                    ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                              Text(
-                                'Plastik Cerrahi Uzmanı',
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      color: Colors.white.withOpacity(0.8),
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            // TODO: Add logout functionality
-                          },
-                          icon: Icon(
-                            Icons.logout,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.2),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.person,
-                            color: Colors.white.withOpacity(0.9),
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Kullanıcı ID: $userId',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Content
+              CustomAppBar(
+                secondary: secondary,
+                tertiary: tertiary,
+                displayName: displayName,
+                context: context,
+              ), // Content
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(20),

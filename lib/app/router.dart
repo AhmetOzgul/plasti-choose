@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:plastinder/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:plastinder/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:plastinder/features/assistant/presentation/pages/assistant_home_page.dart';
+import 'package:plastinder/features/assistant/presentation/pages/new_patient_page.dart';
 import 'package:plastinder/features/professor/presentation/pages/professor_home_page.dart';
 
 GoRouter buildRouter(AuthController auth) {
@@ -23,6 +24,10 @@ GoRouter buildRouter(AuthController auth) {
       GoRoute(
         path: '/assistant/home',
         builder: (context, state) => const AssistantHomePage(),
+      ),
+      GoRoute(
+        path: '/assistant/new',
+        builder: (context, state) => const NewPatientPage(),
       ),
       GoRoute(
         path: '/professor/home',
