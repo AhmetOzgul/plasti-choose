@@ -8,14 +8,26 @@ final class AuthController extends ChangeNotifier {
   final AuthRepository _repository;
 
   bool _isLoading = false;
+  bool _isInitializing = true;
   String? _errorMessage;
   AppUser? _user;
 
   bool get isLoading => _isLoading;
+  bool get isInitializing => _isInitializing;
   String? get errorMessage => _errorMessage;
   AppUser? get user => _user;
 
-  AuthController(this._repository);
+  AuthController(this._repository) {
+    _listenToAuthState();
+  }
+
+  void _listenToAuthState() {
+    _repository.authStateChanges().listen((user) {
+      _user = user;
+      _isInitializing = false;
+      notifyListeners();
+    });
+  }
 
   Future<void> login(String email, String password) async {
     _isLoading = true;
@@ -23,8 +35,7 @@ final class AuthController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final user = await _repository.signIn(email: email, password: password);
-      _user = user;
+      await _repository.signIn(email: email, password: password);
       _errorMessage = null;
     } on fb.FirebaseAuthException catch (e) {
       String errorMsg;
@@ -76,7 +87,6 @@ final class AuthController extends ChangeNotifier {
   Future<void> logout() async {
     try {
       await _repository.signOut();
-      _user = null;
       _errorMessage = null;
     } catch (e) {
       _errorMessage = 'Çıkış yapılamadı: ${e.toString()}';

@@ -120,11 +120,6 @@ class AssistantHomePage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push('/assistant/new'),
-        icon: const Icon(Icons.add),
-        label: const Text('Hasta Ekle'),
-      ),
     );
   }
 

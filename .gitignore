@@ -49,6 +49,9 @@ app.*.map.json
 # Firebase
 .env
 firebase.json
+firestore.rules
+storage.rules
+firestore.indexes.json
 prd.md
 .cursor
 

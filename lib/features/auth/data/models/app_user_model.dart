@@ -49,8 +49,13 @@ final class AppUserModel {
     };
   }
 
-  AppUser toEntity() =>
-      AppUser(id: id, email: email, displayName: displayName, role: role);
+  AppUser toEntity() => AppUser(
+    id: id,
+    email: email,
+    displayName: displayName,
+    role: role,
+    ownerProfessorId: ownerProfessorId,
+  );
 
   AppUserModel copyWith({
     String? email,
