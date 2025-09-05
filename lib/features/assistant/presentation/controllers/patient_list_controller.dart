@@ -73,14 +73,15 @@ class PatientListController extends ChangeNotifier {
       final imagesFolderPath = 'patients/${patient.id}/images';
       final folderRef = storage.ref(imagesFolderPath);
 
-      await folderRef.delete();
+      // List all files in the folder
+      final listResult = await folderRef.listAll();
 
-      final patientFolderRef = storage.ref('patients/${patient.id}');
-      await patientFolderRef.delete();
-    } catch (e) {
-      if (kDebugMode) {
-        print('DEBUG: Error deleting patient images: $e');
+      // Delete each file individually
+      for (final fileRef in listResult.items) {
+        await fileRef.delete();
       }
+    } catch (e) {
+      // Ignore storage deletion errors
     }
   }
 
