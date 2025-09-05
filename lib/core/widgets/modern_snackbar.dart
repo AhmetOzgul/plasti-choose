@@ -33,7 +33,6 @@ class ModernSnackBar {
         icon = Icons.warning_outlined;
         break;
       case SnackBarType.info:
-      default:
         backgroundColor = colorScheme.secondary;
         textColor = Colors.white;
         icon = Icons.info_outline;

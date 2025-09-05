@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plastinder/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:plastinder/core/widgets/custom_app_bar.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfessorHomePage extends StatelessWidget {
   const ProfessorHomePage({super.key});
@@ -62,23 +63,21 @@ class ProfessorHomePage extends StatelessWidget {
                           children: [
                             _buildQuickAccessCard(
                               context,
-                              icon: Icons.people,
-                              title: 'Hastalarım',
-                              subtitle: 'Hasta yönetimi',
+                              icon: Icons.add_circle_outline,
+                              title: 'Yeni Hasta',
+                              subtitle: 'Hasta Oluştur',
                               color: tertiary,
                               onTap: () {
-                                // TODO: Navigate to patients
+                                context.push('/professor/new');
                               },
                             ),
                             _buildQuickAccessCard(
                               context,
-                              icon: Icons.calendar_today,
-                              title: 'Randevularım',
-                              subtitle: 'Program yönetimi',
+                              icon: Icons.people,
+                              title: 'Hastalar',
+                              subtitle: 'Hasta listesi',
                               color: secondary,
-                              onTap: () {
-                                // TODO: Navigate to appointments
-                              },
+                              onTap: () => context.push('/professor/patients'),
                             ),
                             _buildQuickAccessCard(
                               context,

@@ -133,4 +133,29 @@ final class FirestorePatientRepository implements PatientRepository {
               .toList(),
         );
   }
+
+  @override
+  Future<List<Patient>> getAllPatients() async {
+    try {
+      final snapshot = await _firestore
+          .collection('patients')
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => Patient.fromMap(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      throw Exception('Hasta listesi alınamadı: $e');
+    }
+  }
+
+  @override
+  Future<void> deletePatient(String patientId) async {
+    try {
+      await _firestore.collection('patients').doc(patientId).delete();
+    } catch (e) {
+      throw Exception('Hasta silinemedi: $e');
+    }
+  }
 }

@@ -18,4 +18,10 @@ abstract interface class PatientRepository {
 
   /// Stream of patients for a professor
   Stream<List<Patient>> getPatientsForProfessor(String professorId);
+
+  /// Gets all patients
+  Future<List<Patient>> getAllPatients();
+
+  /// Deletes a patient
+  Future<void> deletePatient(String patientId);
 }

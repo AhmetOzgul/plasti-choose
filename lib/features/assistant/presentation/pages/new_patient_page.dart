@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:plastinder/core/widgets/gradient_button.dart';
 import 'package:plastinder/core/widgets/labeled_text_field.dart';
 import 'package:plastinder/core/widgets/error_banner.dart';
@@ -75,7 +76,7 @@ class NewPatientPage extends StatelessWidget {
             );
 
             if (success) {
-              Navigator.of(context).pop();
+              context.pop();
               ModernSnackBar.showSuccess(
                 context,
                 'Hasta başarıyla kaydedildi!',
@@ -116,7 +117,7 @@ class NewPatientPage extends StatelessWidget {
                           curve: Curves.easeOutBack,
                         ),
                       ),
-                      child: FadeTransition(opacity: animation, child: child!),
+                      child: FadeTransition(opacity: animation, child: child),
                     );
                   },
             );

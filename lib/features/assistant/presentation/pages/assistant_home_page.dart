@@ -75,9 +75,7 @@ class AssistantHomePage extends StatelessWidget {
                               title: 'Hastalar',
                               subtitle: 'Hasta listesi',
                               color: secondary,
-                              onTap: () {
-                                // TODO: Navigate to patients
-                              },
+                              onTap: () => context.push('/assistant/patients'),
                             ),
                             _buildQuickAccessCard(
                               context,
