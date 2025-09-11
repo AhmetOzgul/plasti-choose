@@ -9,10 +9,36 @@ import 'package:firebase_storage/firebase_storage.dart';
 class PatientListController extends ChangeNotifier {
   final PatientRepository _patientRepository;
 
-  PatientListController(this._patientRepository);
+  List<Patient> _patients = [];
+  bool _isLoading = false;
+  String? _errorMessage;
 
-  Future<List<Patient>> getAllPatients() {
-    return _patientRepository.getAllPatients();
+  PatientListController(this._patientRepository) {
+    _loadPatients();
+  }
+
+  List<Patient> get patients => _patients;
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
+
+  Future<void> _loadPatients() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      _patients = await _patientRepository.getAllPatients();
+      _errorMessage = null;
+    } catch (e) {
+      _errorMessage = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> refreshPatients() async {
+    await _loadPatients();
   }
 
   Future<void> deletePatient(BuildContext context, Patient patient) async {
@@ -48,8 +74,8 @@ class PatientListController extends ChangeNotifier {
         );
       }
 
-      // Notify listeners to refresh the list
-      notifyListeners();
+      // Refresh the patients list
+      await _loadPatients();
     } catch (e) {
       // Close loading dialog safely
       if (dialogContext != null && dialogContext!.mounted) {

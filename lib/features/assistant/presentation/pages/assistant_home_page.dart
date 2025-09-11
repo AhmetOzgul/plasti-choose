@@ -77,36 +77,6 @@ class AssistantHomePage extends StatelessWidget {
                               color: secondary,
                               onTap: () => context.push('/assistant/patients'),
                             ),
-                            _buildQuickAccessCard(
-                              context,
-                              icon: Icons.calendar_today,
-                              title: 'Randevular',
-                              subtitle: 'Takvim görünümü',
-                              color: tertiary,
-                              onTap: () {
-                                // TODO: Navigate to appointments
-                              },
-                            ),
-                            _buildQuickAccessCard(
-                              context,
-                              icon: Icons.medical_information,
-                              title: 'Raporlar',
-                              subtitle: 'Tıbbi raporlar',
-                              color: Colors.orange,
-                              onTap: () {
-                                // TODO: Navigate to reports
-                              },
-                            ),
-                            _buildQuickAccessCard(
-                              context,
-                              icon: Icons.settings,
-                              title: 'Ayarlar',
-                              subtitle: 'Uygulama ayarları',
-                              color: Colors.purple,
-                              onTap: () {
-                                // TODO: Navigate to settings
-                              },
-                            ),
                           ],
                         ),
                       ),
