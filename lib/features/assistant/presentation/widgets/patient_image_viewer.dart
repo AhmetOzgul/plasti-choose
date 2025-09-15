@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:plastinder/features/assistant/data/models/patient_model.dart';
+import 'package:plastinder/core/cache/image_cache_manager.dart';
 
 final class PatientImageViewer extends StatefulWidget {
   final Patient patient;
@@ -97,30 +99,26 @@ final class _PatientImageViewerState extends State<PatientImageViewer> {
           minScale: 0.5,
           maxScale: 5.0,
           child: Center(
-            child: Image.network(
-              image.url,
+            child: CachedNetworkImage(
+              imageUrl: image.url,
               fit: BoxFit.contain,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return const Center(
-                  child: CircularProgressIndicator(color: Colors.white),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.error_outline, color: Colors.white, size: 64),
-                      SizedBox(height: 16),
-                      Text(
-                        'Fotoğraf yüklenemedi',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ],
-                  ),
-                );
-              },
+              cacheManager: PatientImageCacheManager(),
+              placeholder: (context, url) => const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
+              errorWidget: (context, url, error) => const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error_outline, color: Colors.white, size: 64),
+                    SizedBox(height: 16),
+                    Text(
+                      'Fotoğraf yüklenemedi',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         );

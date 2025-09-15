@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:plastinder/features/assistant/presentation/controllers/patient_list_controller.dart';
 import 'package:plastinder/features/assistant/data/models/patient_model.dart';
+import 'package:plastinder/core/cache/image_cache_manager.dart';
 
 final class PatientCard extends StatelessWidget {
   final Patient patient;
@@ -168,31 +170,27 @@ final class _PatientAvatar extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16),
-          child: Image.network(
-            imageUrl,
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
             fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Container(
-                color: tertiary.withOpacity(0.1),
-                child: Center(
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(tertiary),
-                    ),
+            cacheManager: PatientImageCacheManager(),
+            placeholder: (context, url) => Container(
+              color: tertiary.withOpacity(0.1),
+              child: Center(
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(tertiary),
                   ),
                 ),
-              );
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                color: tertiary.withOpacity(0.1),
-                child: Icon(Icons.person, color: tertiary, size: 24),
-              );
-            },
+              ),
+            ),
+            errorWidget: (context, url, error) => Container(
+              color: tertiary.withOpacity(0.1),
+              child: Icon(Icons.person, color: tertiary, size: 24),
+            ),
           ),
         ),
       );
