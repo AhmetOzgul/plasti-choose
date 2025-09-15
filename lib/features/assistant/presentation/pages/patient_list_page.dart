@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:plastinder/features/assistant/presentation/controllers/patient_list_controller.dart';
-import 'package:plastinder/features/assistant/data/models/patient_model.dart';
 import 'package:plastinder/features/assistant/presentation/widgets/patient_card.dart';
 
 class PatientListPage extends StatelessWidget {
@@ -73,9 +72,7 @@ class _PatientListPageContent extends StatelessWidget {
                   child: Consumer<PatientListController>(
                     builder: (context, controller, child) {
                       if (controller.isLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       }
 
                       if (controller.errorMessage != null) {
@@ -91,22 +88,14 @@ class _PatientListPageContent extends StatelessWidget {
                               const SizedBox(height: 16),
                               Text(
                                 'Hasta listesi yüklenirken hata oluştu',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                      color: Colors.red.shade600,
-                                    ),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(color: Colors.red.shade600),
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 controller.errorMessage!,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: Colors.grey.shade600,
-                                    ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: Colors.grey.shade600),
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -127,22 +116,14 @@ class _PatientListPageContent extends StatelessWidget {
                               const SizedBox(height: 16),
                               Text(
                                 'Henüz hasta kaydı bulunmuyor',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                      color: Colors.grey.shade600,
-                                    ),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(color: Colors.grey.shade600),
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 'Yeni hasta eklemek için ana sayfadaki "Yeni Hasta" butonunu kullanın',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: Colors.grey.shade500,
-                                    ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: Colors.grey.shade500),
                                 textAlign: TextAlign.center,
                               ),
                             ],
