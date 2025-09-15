@@ -22,9 +22,10 @@ final class FirestorePatientRepository implements PatientRepository {
     required String createdByAssistantId,
     required List<File> imageFiles,
   }) async {
+    String? patientId;
     try {
       // 1. Generate patient ID
-      final patientId = PatientIdGenerator.generateId();
+      patientId = PatientIdGenerator.generateId();
       final now = DateTime.now();
 
       // 2. Create initial patient document
@@ -46,34 +47,66 @@ final class FirestorePatientRepository implements PatientRepository {
           .doc(patientId)
           .set(initialPatient.toMap());
 
-      // 4. Upload images to Storage
+      // 4. Upload images to Storage with error handling
       final uploadedImages = <PatientImage>[];
       for (int i = 0; i < imageFiles.length; i++) {
-        final imageFile = imageFiles[i];
-        final imageId = PatientIdGenerator.generateImageId();
-        final fileName = '${imageId}_${i + 1}.jpg';
-        final storagePath = 'patients/$patientId/images/$fileName';
+        try {
+          final imageFile = imageFiles[i];
 
-        // Upload to Firebase Storage
-        final storageRef = _storage.ref().child(storagePath);
-        final uploadTask = storageRef.putFile(imageFile);
-        final snapshot = await uploadTask;
-        final downloadUrl = await snapshot.ref.getDownloadURL();
+          // Check if file exists
+          if (!await imageFile.exists()) {
+            continue;
+          }
 
-        // Get file metadata
-        final metadata = await imageFile.stat();
+          // Check file size (max 10MB)
+          final metadata = await imageFile.stat();
+          if (metadata.size > 10 * 1024 * 1024) {
+            continue;
+          }
 
-        // Create PatientImage object
-        final patientImage = PatientImage(
-          id: imageId,
-          url: downloadUrl,
-          fileName: fileName,
-          fileSize: metadata.size,
-          contentType: 'image/jpeg',
-          uploadedAt: now,
-        );
+          // Check file size (min 1KB)
+          if (metadata.size < 1024) {
+            continue;
+          }
 
-        uploadedImages.add(patientImage);
+          final imageId = PatientIdGenerator.generateImageId();
+          final fileName = '${imageId}_${i + 1}.jpg';
+          final storagePath = 'patients/$patientId/images/$fileName';
+
+          // Upload to Firebase Storage with timeout
+          final storageRef = _storage.ref().child(storagePath);
+          final uploadTask = storageRef.putFile(imageFile);
+
+          // Wait for upload with timeout
+          final snapshot = await uploadTask.timeout(
+            const Duration(minutes: 3), // 3 dakika timeout
+            onTimeout: () {
+              throw Exception('Resim yükleme zaman aşımına uğradı');
+            },
+          );
+
+          final downloadUrl = await snapshot.ref.getDownloadURL();
+
+          // Create PatientImage object
+          final patientImage = PatientImage(
+            id: imageId,
+            url: downloadUrl,
+            fileName: fileName,
+            fileSize: metadata.size,
+            contentType: 'image/jpeg',
+            uploadedAt: now,
+          );
+
+          uploadedImages.add(patientImage);
+        } catch (e) {
+          // If image upload fails, continue with other images
+          // Don't throw here, continue with other images
+        }
+      }
+
+      // En az bir resim yüklenmiş olmalı
+      if (uploadedImages.isEmpty) {
+        throw Exception('Hiçbir resim yüklenemedi. Lütfen tekrar deneyin.');
       }
 
       // 5. Update Firestore with image metadata
@@ -89,7 +122,32 @@ final class FirestorePatientRepository implements PatientRepository {
 
       return updatedPatient;
     } catch (e) {
-      throw Exception('Failed to create patient: $e');
+      // Cleanup: Delete patient document if it was created
+      if (patientId != null) {
+        try {
+          await _firestore.collection('patients').doc(patientId).delete();
+        } catch (cleanupError) {
+          // Ignore cleanup errors
+        }
+      }
+
+      // Daha detaylı hata mesajı
+      String errorMessage = 'Hasta oluşturulamadı';
+      if (e.toString().contains('permission-denied')) {
+        errorMessage = 'Yetki hatası. Lütfen tekrar giriş yapın.';
+      } else if (e.toString().contains('network')) {
+        errorMessage = 'İnternet bağlantı sorunu. Lütfen tekrar deneyin.';
+      } else if (e.toString().contains('quota')) {
+        errorMessage =
+            'Depolama kotası aşıldı. Lütfen daha sonra tekrar deneyin.';
+      } else if (e.toString().contains('unavailable')) {
+        errorMessage =
+            'Servis geçici olarak kullanılamıyor. Lütfen tekrar deneyin.';
+      } else {
+        errorMessage = 'Hasta oluşturulamadı: ${e.toString()}';
+      }
+
+      throw Exception(errorMessage);
     }
   }
 

@@ -111,7 +111,6 @@ class NewPatientController extends ChangeNotifier {
 
       return thumbnail;
     } catch (e) {
-      print('Thumbnail oluşturma hatası: $e');
       return null;
     }
   }

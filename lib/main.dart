@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:plastinder/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:plastinder/features/auth/domain/repositories/auth_repository.dart';
 import 'package:plastinder/features/assistant/domain/repositories/patient_repository.dart';
+import 'package:plastinder/features/professor/domain/repositories/professor_patient_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:plastinder/firebase_options.dart';
 
@@ -19,6 +20,9 @@ Future<void> main() async {
       providers: [
         Provider<AuthRepository>(create: (_) => getIt<AuthRepository>()),
         Provider<PatientRepository>(create: (_) => getIt<PatientRepository>()),
+        Provider<ProfessorPatientRepository>(
+          create: (_) => getIt<ProfessorPatientRepository>(),
+        ),
         ChangeNotifierProvider<AuthController>(
           create: (ctx) => AuthController(ctx.read<AuthRepository>()),
         ),

@@ -63,12 +63,12 @@ class ProfessorHomePage extends StatelessWidget {
                           children: [
                             _buildQuickAccessCard(
                               context,
-                              icon: Icons.add_circle_outline,
-                              title: 'Yeni Hasta',
-                              subtitle: 'Hasta Oluştur',
+                              icon: Icons.rate_review,
+                              title: 'İnceleme',
+                              subtitle: 'Hasta değerlendirme',
                               color: tertiary,
                               onTap: () {
-                                context.push('/professor/new');
+                                context.push('/professor/review');
                               },
                             ),
                             _buildQuickAccessCard(
@@ -81,22 +81,22 @@ class ProfessorHomePage extends StatelessWidget {
                             ),
                             _buildQuickAccessCard(
                               context,
+                              icon: Icons.add_circle_outline,
+                              title: 'Yeni Hasta',
+                              subtitle: 'Hasta Oluştur',
+                              color: Colors.blue,
+                              onTap: () {
+                                context.push('/professor/new');
+                              },
+                            ),
+                            _buildQuickAccessCard(
+                              context,
                               icon: Icons.medical_information,
                               title: 'Konsültasyon',
                               subtitle: 'Asistan desteği',
                               color: Colors.orange,
                               onTap: () {
                                 // TODO: Navigate to consultation
-                              },
-                            ),
-                            _buildQuickAccessCard(
-                              context,
-                              icon: Icons.analytics,
-                              title: 'İstatistikler',
-                              subtitle: 'Performans analizi',
-                              color: Colors.purple,
-                              onTap: () {
-                                // TODO: Navigate to statistics
                               },
                             ),
                           ],

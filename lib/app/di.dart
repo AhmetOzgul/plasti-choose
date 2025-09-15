@@ -8,6 +8,8 @@ import 'package:plastinder/features/auth/data/repositories/firestore_user_reposi
 import 'package:plastinder/features/auth/domain/repositories/user_repository.dart';
 import 'package:plastinder/features/assistant/data/repositories/firestore_patient_repository.dart';
 import 'package:plastinder/features/assistant/domain/repositories/patient_repository.dart';
+import 'package:plastinder/features/professor/data/repositories/professor_patient_repository_impl.dart';
+import 'package:plastinder/features/professor/domain/repositories/professor_patient_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -32,5 +34,9 @@ void configureDependencies() {
       firestore: getIt<FirebaseFirestore>(),
       storage: getIt<FirebaseStorage>(),
     ),
+  );
+
+  getIt.registerLazySingleton<ProfessorPatientRepository>(
+    () => ProfessorPatientRepositoryImpl(getIt<FirebaseFirestore>()),
   );
 }
