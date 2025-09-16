@@ -24,4 +24,7 @@ abstract interface class PatientRepository {
 
   /// Deletes a patient
   Future<void> deletePatient(String patientId);
+
+  /// Updates patient status (for decision changes)
+  Future<void> updatePatientStatus(String patientId, String newStatus);
 }

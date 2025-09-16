@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
-import 'package:plastinder/features/assistant/presentation/controllers/patient_list_controller.dart';
+import 'package:plastinder/features/professor/presentation/controllers/professor_patient_list_controller.dart';
 import 'package:plastinder/features/assistant/data/models/patient_model.dart';
 import 'package:plastinder/core/cache/image_cache_manager.dart';
 
-final class PatientCard extends StatelessWidget {
+final class ProfessorPatientCard extends StatelessWidget {
   final Patient patient;
   final Color secondary;
   final Color tertiary;
 
-  const PatientCard({
+  const ProfessorPatientCard({
     super.key,
     required this.patient,
     required this.secondary,
@@ -37,7 +37,7 @@ final class PatientCard extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
           onTap: () {
-            context.read<PatientListController>().showPatientPhotos(
+            context.read<ProfessorPatientListController>().showPatientPhotos(
               context,
               patient,
             );
@@ -100,17 +100,17 @@ final class PatientCard extends StatelessWidget {
                 // Aksiyon butonları
                 Column(
                   children: [
-                    // Silme butonu
+                    // Durum değiştirme butonu
                     IconButton(
                       onPressed: () => context
-                          .read<PatientListController>()
-                          .showDeleteConfirmation(context, patient),
+                          .read<ProfessorPatientListController>()
+                          .showStatusChangeDialog(context, patient),
                       icon: Icon(
-                        Icons.delete_outline,
-                        color: Colors.red.shade400,
+                        Icons.edit_rounded,
+                        color: Colors.blue.shade400,
                         size: 20,
                       ),
-                      tooltip: 'Hastayı Sil',
+                      tooltip: 'Durumu Değiştir',
                     ),
                     Icon(
                       Icons.arrow_forward_ios,

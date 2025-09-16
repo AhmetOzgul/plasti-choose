@@ -216,4 +216,16 @@ final class FirestorePatientRepository implements PatientRepository {
       throw Exception('Hasta silinemedi: $e');
     }
   }
+
+  @override
+  Future<void> updatePatientStatus(String patientId, String newStatus) async {
+    try {
+      await _firestore.collection('patients').doc(patientId).update({
+        'status': newStatus,
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
+    } catch (e) {
+      throw Exception('Hasta durumu güncellenemedi: $e');
+    }
+  }
 }

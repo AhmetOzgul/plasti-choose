@@ -40,8 +40,8 @@ final class Patient {
               .toList() ??
           [],
       search: map['search'] as Map<String, dynamic>?,
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
-      updatedAt: (map['updatedAt'] as Timestamp).toDate(),
+      createdAt: _parseDateTime(map['createdAt']),
+      updatedAt: _parseDateTime(map['updatedAt']),
       reviewLock: map['reviewLock'] != null
           ? ReviewLock.fromMap(map['reviewLock'] as Map<String, dynamic>)
           : null,
@@ -49,6 +49,28 @@ final class Patient {
           ? Decision.fromMap(map['decision'] as Map<String, dynamic>)
           : null,
     );
+  }
+
+  static DateTime _parseDateTime(dynamic value) {
+    if (value == null) return DateTime.now();
+
+    if (value is Timestamp) {
+      return value.toDate();
+    }
+
+    if (value is String) {
+      try {
+        return DateTime.parse(value);
+      } catch (e) {
+        return DateTime.now();
+      }
+    }
+
+    if (value is DateTime) {
+      return value;
+    }
+
+    return DateTime.now();
   }
 
   Map<String, dynamic> toMap() {
