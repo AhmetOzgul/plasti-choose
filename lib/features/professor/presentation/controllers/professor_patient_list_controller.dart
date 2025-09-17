@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:plastinder/features/professor/domain/repositories/professor_patient_repository.dart';
 import 'package:plastinder/features/assistant/data/models/patient_model.dart';
@@ -12,6 +13,7 @@ class ProfessorPatientListController extends ChangeNotifier {
   List<Patient> _patients = [];
   bool _isLoading = false;
   String? _errorMessage;
+  StreamSubscription<List<Patient>>? _streamSubscription;
 
   ProfessorPatientListController(this._repository, this._authController) {
     _loadPatients();
@@ -29,7 +31,10 @@ class ProfessorPatientListController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _repository
+      // Önceki subscription'ı iptal et
+      _streamSubscription?.cancel();
+
+      _streamSubscription = _repository
           .getAllPatientsForProfessor(_professorId)
           .listen(
             (patients) {
@@ -337,5 +342,11 @@ class ProfessorPatientListController extends ChangeNotifier {
       default:
         return 'Bilinmiyor';
     }
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription?.cancel();
+    super.dispose();
   }
 }

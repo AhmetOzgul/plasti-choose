@@ -91,6 +91,16 @@ class ProfessorHomePage extends StatelessWidget {
                             ),
                             _buildQuickAccessCard(
                               context,
+                              icon: Icons.cleaning_services,
+                              title: 'Temizlik',
+                              subtitle: 'Eski kayıtları sil',
+                              color: Colors.red,
+                              onTap: () {
+                                context.push('/professor/cleanup');
+                              },
+                            ),
+                            _buildQuickAccessCard(
+                              context,
                               icon: Icons.medical_information,
                               title: 'Konsültasyon',
                               subtitle: 'Asistan desteği',

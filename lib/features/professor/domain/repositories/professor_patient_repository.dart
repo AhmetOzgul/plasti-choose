@@ -29,4 +29,15 @@ abstract interface class ProfessorPatientRepository {
 
   /// Review lock'u kaldırır
   Future<void> removeReviewLock(String patientId);
+
+  /// Hastayı siler (temizlik için)
+  Future<void> deletePatient(String patientId);
+
+  /// Belirli tarih aralığındaki hasta sayısını getirir (temizlik için)
+  Future<int> getPatientCountByDateRange(
+    String professorId,
+    DateTime startDate,
+    DateTime endDate,
+    bool includeUndecided,
+  );
 }

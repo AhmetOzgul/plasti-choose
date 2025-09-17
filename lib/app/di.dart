@@ -37,6 +37,9 @@ void configureDependencies() {
   );
 
   getIt.registerLazySingleton<ProfessorPatientRepository>(
-    () => ProfessorPatientRepositoryImpl(getIt<FirebaseFirestore>()),
+    () => ProfessorPatientRepositoryImpl(
+      getIt<FirebaseFirestore>(),
+      getIt<FirebaseStorage>(),
+    ),
   );
 }

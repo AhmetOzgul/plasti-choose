@@ -7,6 +7,7 @@ import 'package:plastinder/features/assistant/presentation/pages/patient_list_pa
 import 'package:plastinder/features/professor/presentation/pages/professor_home_page.dart';
 import 'package:plastinder/features/professor/presentation/pages/review_deck_page.dart';
 import 'package:plastinder/features/professor/presentation/pages/professor_patient_list_page.dart';
+import 'package:plastinder/features/professor/presentation/pages/cleanup_page.dart';
 
 GoRouter buildRouter(AuthController auth) {
   return GoRouter(
@@ -51,6 +52,10 @@ GoRouter buildRouter(AuthController auth) {
       GoRoute(
         path: '/professor/review',
         builder: (context, state) => const ReviewDeckPage(),
+      ),
+      GoRoute(
+        path: '/professor/cleanup',
+        builder: (context, state) => const CleanupPage(),
       ),
     ],
   );
